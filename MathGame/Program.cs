@@ -83,6 +83,7 @@ abstract class MathGame
     }
     protected void ShowResult()
     {
+        History.Add((IntroMessage!, Number[0], Number[1], Result));
         Console.WriteLine($"\nThe result is {Result}.");
         Console.ReadKey();
     }
@@ -108,7 +109,6 @@ class Addition:MathGame
     public Addition()
     {
         Result = Number[0] + Number[1];
-        History.Add((IntroMessage!, Number[0], Number[1], Result));
         ShowResult();
     }
 }
@@ -118,7 +118,6 @@ class Subtraction : MathGame
     public Subtraction()
     {
         Result = Number[0] - Number[1];
-        History.Add((IntroMessage!, Number[0], Number[1], Result));
         ShowResult();
     }
 }
@@ -128,7 +127,6 @@ class Multiplication : MathGame
     public Multiplication()
     {
         Result = Number[0] * Number[1];
-        History.Add((IntroMessage!, Number[0], Number[1], Result));
         ShowResult();
     }
 }
@@ -149,7 +147,6 @@ class Division : MathGame
             if (Number[0] % Number[1] == 0)
             {
                 Result = Number[0] / Number[1];
-                History.Add((IntroMessage!, Number[0], Number[1], Result));
                 ShowResult(); ;
             }
             else
