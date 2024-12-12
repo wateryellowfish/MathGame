@@ -11,7 +11,7 @@ while(true)
 void ChooseMathGame()
 {
     Console.WriteLine(@"Welcome to Math Game!
-Every round, you will be given with a math question with two integers, and you should provide the correct answer within 10 seconds (Timer running in background).
+Every round, you will be given with a math question with two integers, and you should provide the correct answer within 15 seconds (Timer running in background).
 You only have three lives, so you should answer carefully.
 ");
     Console.WriteLine("Choose math operation.");
@@ -46,17 +46,23 @@ void GetOperation()
 {
     GameProcedure? gameProcedure;
     string? input = Console.ReadLine();
-    if (int.TryParse(input, out int num) && num >= 1 && num <= 4)
+    if (int.TryParse(input, out int num) && num >= 1 && num <= 6)
     {
+        if(num==6)
+        {
+            GameProcedure.ShowPrevData();
+            return;
+        }
         Console.WriteLine("\nChoose starting level.");
         GetDifficulty();
         Console.Clear();
         gameProcedure = num switch
         {
             1 => new Addition(),
-            //2 => new Subtraction(),
-            //3 => new Multiplication(),
-            //4 => new Division(),
+            2 => new Subtraction(),
+            3 => new Multiplication(),
+            4 => new Division(),
+            5 => new RandomOperation(),
             _ => null
         };
     }
