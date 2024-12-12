@@ -1,5 +1,6 @@
 ﻿
-MathGame mathGame;
+using MathGame;
+
 
 while(true)
 {
@@ -9,156 +10,62 @@ while(true)
 
 void ChooseMathGame()
 {
-    Console.WriteLine("Choose a Math Game: ");
+    Console.WriteLine(@"Welcome to Math Game!
+Every round, you will be given with a math question with two integers, and you should provide the correct answer within 10 seconds (Timer running in background).
+You only have three lives, so you should answer carefully.
+");
+    Console.WriteLine("Choose math operation.");
     Console.WriteLine("1 - Addition");
     Console.WriteLine("2 - Subtraction");
     Console.WriteLine("3 - Multiplication");
     Console.WriteLine("4 - Division");
-    Console.WriteLine("5 - Show history");
+    Console.WriteLine("5 - Random Operation");
+    Console.WriteLine("6 - Show previous games");
+    GetOperation();
+}
 
-    string? input=Console.ReadLine();
-    Console.Clear();
-    if (input == "1")
+void GetDifficulty()
+{
+    Console.Write("Select from 1 to 5: ");
+    string? input= Console.ReadLine();
+    if (int.TryParse(input, out int num) && num >= 1 && num <= 5)
     {
-        MathGame.IntroMessage = "Addition game has been selected.";
-        mathGame = new Addition();
-    }
-    else if (input == "2")
-    {
-        MathGame.IntroMessage = "Subtraction game has been selected.";
-        mathGame = new Subtraction();
-    }
-    else if (input == "3")
-    {
-        MathGame.IntroMessage = "Multiplication game has been selected.";
-        mathGame = new Multiplication();
-    }
-    else if (input == "4")
-    {
-        MathGame.IntroMessage = "Division game has been selected.";
-        mathGame = new Division();
-    }
-    else if (input == "5")
-    {
-        Console.WriteLine("Showing history: \n");
-        MathGame.ShowHistory();
-        Console.ReadKey();
+        GameProcedure.Level = num;
     }
     else
     {
-        ChooseMathGame();
+        Console.CursorLeft = 0;
+        Console.CursorTop--;
+        Console.Write(new string(' ',Console.WindowWidth));
+        Console.CursorLeft = 0;
+        GetDifficulty();
     }
 }
 
-abstract class MathGame
+void GetOperation()
 {
-    public static List<(string message, int firstNum, int secondNum, int result)> History { get; private set; }=new List<(string, int, int , int)> ();
-    public static string? IntroMessage {  get; set; }
-    public int[] Number { get; set; } = new int[2];
-    public int Result { get; set; } = 0;
-    public MathGame()
+    GameProcedure? gameProcedure;
+    string? input = Console.ReadLine();
+    if (int.TryParse(input, out int num) && num >= 1 && num <= 4)
     {
-        Console.WriteLine(IntroMessage);
-        Console.WriteLine();
-        for (int i = 0; i < 2; i++)
+        Console.WriteLine("\nChoose starting level.");
+        GetDifficulty();
+        Console.Clear();
+        gameProcedure = num switch
         {
-            string index = i switch
-            {
-                0 => "first",
-                1 => "second",
-                _ => ""
-            };
-            Console.Write($"Enter {index} integer: ");
-            string? input = Console.ReadLine();
-            if (int.TryParse(input, out int num)) Number[i] = num;
-            else
-            {
-                i--;
-                Console.CursorLeft = 0;
-                Console.CursorTop--;
-                Console.Write(new string(' ',Console.WindowWidth));
-                Console.CursorLeft=0;
-            }
-        }
+            1 => new Addition(),
+            //2 => new Subtraction(),
+            //3 => new Multiplication(),
+            //4 => new Division(),
+            _ => null
+        };
     }
-    protected void ShowResult()
+    else
     {
-        History.Add((IntroMessage!, Number[0], Number[1], Result));
-        Console.WriteLine($"\nThe result is {Result}.");
-        Console.ReadKey();
-    }
-    public static void ShowHistory()
-    {
-        if(History.Count==0)
-        {
-            Console.WriteLine("No history data found.");
-            return;
-        }
-        foreach(var data in History)
-        {
-            Console.WriteLine($"{History.IndexOf(data)+1}. {data.message}");
-            Console.WriteLine($"   First integer: {data.firstNum}");
-            Console.WriteLine($"   Second integer: {data.secondNum}");
-            Console.WriteLine($"   Result: {data.result}\n");
-        }
+        Console.CursorLeft = 0;
+        Console.CursorTop--;
+        Console.Write(new string(' ', Console.WindowWidth));
+        Console.CursorLeft = 0;
+        GetOperation();
     }
 }
-
-class Addition:MathGame
-{
-    public Addition()
-    {
-        Result = Number[0] + Number[1];
-        ShowResult();
-    }
-}
-
-class Subtraction : MathGame
-{
-    public Subtraction()
-    {
-        Result = Number[0] - Number[1];
-        ShowResult();
-    }
-}
-
-class Multiplication : MathGame
-{
-    public Multiplication()
-    {
-        Result = Number[0] * Number[1];
-        ShowResult();
-    }
-}
-
-class Division : MathGame
-{
-    public Division()
-    {
-        try
-        {
-            if (Number[0]<0 || Number[0]>100)
-            {
-                Console.WriteLine("\nDividend (first integer) should be between 0 and 100.");
-                Console.ReadKey();
-                return;
-            }
-
-            if (Number[0] % Number[1] == 0)
-            {
-                Result = Number[0] / Number[1];
-                ShowResult(); ;
-            }
-            else
-            {
-                Console.WriteLine("\nInvalid operation. Result does not show valid integer.");
-                Console.ReadKey();
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-        }
-    }
-}
-
