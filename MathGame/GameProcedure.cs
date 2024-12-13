@@ -129,7 +129,7 @@ namespace MathGame
                 Console.WriteLine(Outcome);
                 PrevData.Add((SelectedOperation!, LevelsCompleted, Outcome));
             }
-            Console.WriteLine("Press H to view rounds history or press other keys to choose new game.");
+            Console.WriteLine("Press H to view rounds history before exiting or press other keys to exit.");
             ConsoleKey key=Console.ReadKey().Key;
             if (key == ConsoleKey.Enter && Level <= 5 && Player.Lives>0)
             {
@@ -151,7 +151,7 @@ namespace MathGame
             {
                 Console.Clear();
                 ShowHistory();
-                EndGameOptions();
+                Console.ReadKey();
             }
             if(Player.Lives>0 && Level<=5)
             {
