@@ -11,7 +11,7 @@ while(true)
 void ChooseMathGame()
 {
     Console.WriteLine(@"Welcome to Math Game!
-Every round, you will be given with a math question with two integers, and you should provide the correct answer within 15 seconds (Timer running in background).
+Every round, you will be given with a math question with two integers, and you should provide the correct answer.
 You only have three lives, so you should answer carefully.
 ");
     Console.WriteLine("Choose math operation.");
